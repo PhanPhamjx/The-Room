@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # This .gitignore file should be placed at the root of your Unity project directory
 #
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
@@ -39,10 +40,24 @@ ExportedObj/
 *.tmp
 *.user
 *.userprefs
+=======
+# Thư mục và file Unity không cần backup
+Library/
+Logs/
+Temp/
+.vs/
+.idea/
+.DS_Store
+*.suo
+*.user
+*.unityproj
+*.csproj
+>>>>>>> 2fa8337 (back up code lan 1)
 *.pidb
 *.booproj
 *.svd
 *.pdb
+<<<<<<< HEAD
 *.mdb
 *.opendb
 *.VC.db
@@ -71,3 +86,5 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+=======
+>>>>>>> 2fa8337 (back up code lan 1)
