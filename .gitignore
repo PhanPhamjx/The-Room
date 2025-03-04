@@ -1,0 +1,15 @@
+# Thư mục và file Unity không cần backup
+Library/
+Logs/
+Temp/
+.vs/
+.idea/
+.DS_Store
+*.suo
+*.user
+*.unityproj
+*.csproj
+*.pidb
+*.booproj
+*.svd
+*.pdb

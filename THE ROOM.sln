@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{B75DB2CA-D906-47AC-9754-5D8237334A74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "com.cqf.urpvolumetricfog.runtime", "com.cqf.urpvolumetricfog.runtime.csproj", "{5BD4EC3B-7306-9B9B-E026-E54EB09F9F59}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.ProBuilder.Examples.Editor", "Unity.ProBuilder.Examples.Editor.csproj", "{9F99934C-B529-810B-D67C-084DFD03F277}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B75DB2CA-D906-47AC-9754-5D8237334A74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75DB2CA-D906-47AC-9754-5D8237334A74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75DB2CA-D906-47AC-9754-5D8237334A74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75DB2CA-D906-47AC-9754-5D8237334A74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BD4EC3B-7306-9B9B-E026-E54EB09F9F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BD4EC3B-7306-9B9B-E026-E54EB09F9F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BD4EC3B-7306-9B9B-E026-E54EB09F9F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BD4EC3B-7306-9B9B-E026-E54EB09F9F59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F99934C-B529-810B-D67C-084DFD03F277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F99934C-B529-810B-D67C-084DFD03F277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F99934C-B529-810B-D67C-084DFD03F277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F99934C-B529-810B-D67C-084DFD03F277}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
