@@ -1,0 +1,40 @@
+{
+    "name": "MyPC",
+    "maps": [
+        {
+            "name": "MyPc",
+            "id": "094446e0-518c-4f4a-87aa-cb9658d81baa",
+            "actions": [
+                {
+                    "name": "Look",
+                    "type": "Value",
+                    "id": "dc79531e-f8cf-48d4-aa05-2db4868e1121",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "70ce4bc1-931d-4dd3-91f6-6b5354c7dd4c",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "myPc",
+            "bindingGroup": "myPc",
+            "devices": []
+        }
+    ]
+}

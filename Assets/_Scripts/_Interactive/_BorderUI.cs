@@ -1,50 +1,46 @@
-﻿using UnityEngine;
+﻿using Project_TR.Events;
+using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class _BorderUI : MonoBehaviour
 {
+   
     [Header("UI Setup")]
     [SerializeField] private Image uiBorderImage; // Image của UI Border
-    [SerializeField] private Camera playerCamera; // Camera của người chơi
-    [SerializeField] private float raycastDistance = 10f; // Khoảng cách raycast
-    [SerializeField] private float viewThreshold = 0.8f; // Ngưỡng góc nhìn (chỉ ra có nhìn vào đối tượng hay không)
+    [SerializeField] private TextMeshProUGUI txt_Info;
     [SerializeField] private float borderPadding = 0.1f; // Padding thêm vào để border to hơn vật thể
+
+    [Header("Raycast Setup")]
+    [SerializeField] private CameraRaycasting rayChecker; // RayChecker để kiểm tra raycast
 
     private void Update()
     {
-        HandleRaycastAndBorder();
+        
     }
 
     /// <summary>
     /// Quản lý raycast và hiển thị UI Border nếu phát hiện vật thể tương tác.
     /// </summary>
-    private void HandleRaycastAndBorder()
-    {
-        if (TryGetRaycastHit(out RaycastHit hit))
-        {
-            if (IsInteractable(hit.collider) && IsLookingAtObject(hit.collider))
-            {
-                ShowUIBorder(hit.collider);
-            }
-            else
-            {
-                HideUIBorder();
-            }
-        }
-        else
-        {
-            HideUIBorder();
-        }
-    }
-
-    /// <summary>
-    /// Kiểm tra raycast và trả về thông tin va chạm nếu có.
-    /// </summary>
-    private bool TryGetRaycastHit(out RaycastHit hit)
-    {
-        Ray ray = playerCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
-        return Physics.Raycast(ray, out hit, raycastDistance);
-    }
+    //private void HandleRaycastAndBorder()
+    //{
+    //    if (rayChecker.TryGetRaycastHit(out RaycastHit hit))
+    //    {
+    //        if (IsInteractable(hit.collider) && rayChecker.IsLookingAtObject(hit.transform))
+    //        {
+                
+    //            ShowUIBorder(hit.collider);
+    //        }
+    //        else
+    //        {
+    //            HideUIBorder();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        HideUIBorder();
+    //    }
+    //}
 
     /// <summary>
     /// Kiểm tra xem collider có phải là vật thể tương tác hay không.
@@ -52,16 +48,6 @@ public class _BorderUI : MonoBehaviour
     private bool IsInteractable(Collider collider)
     {
         return collider.CompareTag("CheckItem");
-    }
-
-    /// <summary>
-    /// Kiểm tra xem camera có đang nhìn vào đối tượng hay không.
-    /// </summary>
-    private bool IsLookingAtObject(Collider collider)
-    {
-        Vector3 toTarget = (collider.bounds.center - playerCamera.transform.position).normalized;
-        float dot = Vector3.Dot(playerCamera.transform.forward, toTarget);
-        return dot >= viewThreshold;
     }
 
     /// <summary>
@@ -100,7 +86,7 @@ public class _BorderUI : MonoBehaviour
     private Vector2 GetScreenCenter(Bounds bounds)
     {
         Vector3 worldCenter = bounds.center;
-        return playerCamera.WorldToScreenPoint(worldCenter);
+        return rayChecker.mainCamera.WorldToScreenPoint(worldCenter);
     }
 
     /// <summary>
@@ -147,7 +133,7 @@ public class _BorderUI : MonoBehaviour
         Vector2[] screenCorners = new Vector2[worldCorners.Length];
         for (int i = 0; i < worldCorners.Length; i++)
         {
-            screenCorners[i] = playerCamera.WorldToScreenPoint(worldCorners[i]);
+            screenCorners[i] = rayChecker.mainCamera.WorldToScreenPoint(worldCorners[i]);
         }
         return screenCorners;
     }

@@ -57,7 +57,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -225,6 +225,10 @@ PrefabInstance:
     - target: {fileID: 6943448447957950629, guid: 9bb3c45f6578ecd44afc1d9778885dec, type: 3}
       propertyPath: m_Name
       value: BorderUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 6943448447957950629, guid: 9bb3c45f6578ecd44afc1d9778885dec, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

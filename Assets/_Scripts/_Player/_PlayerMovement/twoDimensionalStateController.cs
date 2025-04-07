@@ -1,62 +1,52 @@
-﻿using Project_TR.Events;
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 
 public class TwoDimensionStateController : MonoBehaviour
 {
-    Animator animator;
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private float acceleration = 5.0f;
+    [SerializeField] private float deceleration = 7.0f;
+    [SerializeField] private float maximumWalkVelocity = 0.5f;
+    [SerializeField] private float maximumRunVelocity = 2.0f;
 
-    public float acceleration = 5.0f;
-    public float deceleration = 7.0f;
-    public float maximumWalkVelocity = 0.5f;
-    public float maximumRunVelocity = 2.0f;
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip walkSound;
+    [SerializeField] private AudioClip runSound;
+    [SerializeField] private AudioClip jumpSound;
+    [SerializeField] private AudioClip landSound;
 
     private float velocityZ = 0.0f;
     private float velocityX = 0.0f;
     private bool isJumping = false;
 
-    // Các biến để quản lý âm thanh
-    public AudioSource audioSource;  // AudioSource gắn với nhân vật
-    public AudioClip walkSound;      // Âm thanh đi bộ
-    public AudioClip runSound;       // Âm thanh chạy
-    public AudioClip jumpSound;      // Âm thanh nhảy
-    public AudioClip landSound;      // Âm thanh chạm đất
-
-    void Start()
+    private void OnEnable()
     {
-        animator = GetComponent<Animator>();
-
-        // Kiểm tra nếu chưa gắn AudioSource
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-        }
+        PlayerEvents.OnMovement += HandleMovement;
+        PlayerEvents.OnJump += HandleJump;
+        PlayerEvents.OnLand += HandleLand;
     }
 
-    void Update()
+    private void OnDisable()
     {
-        bool forwardPressed = Input.GetKey("w");
-        bool backwardPressed = Input.GetKey("s");
-        bool leftPressed = Input.GetKey("a");
-        bool rightPressed = Input.GetKey("d");
-        bool runPressed = Input.GetKey(KeyCode.LeftShift);
-        bool jumpPressed = Input.GetKeyDown(KeyCode.Space);
+        PlayerEvents.OnMovement -= HandleMovement;
+        PlayerEvents.OnJump -= HandleJump;
+        PlayerEvents.OnLand -= HandleLand;
+    }
 
-        // Kiểm tra và xử lý nhảy
-        if (jumpPressed && !isJumping)
-        {
-            StartCoroutine(JumpRoutine(0.2f));  // Thực hiện jump trong 0.2 giây
-        }
+    private void HandleMovement(Vector2 moveInput, bool isSprinting, bool isGrounded)
+    {
+        float currentMaxVelocity = isSprinting ? maximumRunVelocity : maximumWalkVelocity;
 
-        float currentMaxVelocity = runPressed ? maximumRunVelocity : maximumWalkVelocity;
-        velocityZ = UpdateVelocitySmooth(forwardPressed, backwardPressed, velocityZ, currentMaxVelocity);
-        velocityX = UpdateVelocitySmooth(rightPressed, leftPressed, velocityX, currentMaxVelocity);
+        velocityZ = UpdateVelocitySmooth(moveInput.y > 0, moveInput.y < 0, velocityZ, currentMaxVelocity);
+        velocityX = UpdateVelocitySmooth(moveInput.x > 0, moveInput.x < 0, velocityX, currentMaxVelocity);
 
         animator.SetFloat("velocityZ", velocityZ);
         animator.SetFloat("velocityX", velocityX);
 
-        // Cập nhật âm thanh
-        UpdateSoundEffects(forwardPressed, backwardPressed, leftPressed, rightPressed, runPressed);
+        bool isMoving = moveInput != Vector2.zero;
+        UpdateSoundEffects(isMoving, isSprinting);
     }
 
     private float UpdateVelocitySmooth(bool positivePressed, bool negativePressed, float currentVelocity, float maxVelocity)
@@ -82,28 +72,36 @@ public class TwoDimensionStateController : MonoBehaviour
         return Mathf.Clamp(currentVelocity, -maxVelocity, maxVelocity);
     }
 
+    private void HandleJump()
+    {
+        if (!isJumping)
+        {
+            StartCoroutine(JumpRoutine(0.2f));
+        }
+    }
+
     private IEnumerator JumpRoutine(float duration)
     {
         isJumping = true;
-        animator.SetTrigger("isJump");  // Kích hoạt trigger Jump
-        audioSource.PlayOneShot(jumpSound);  // Phát âm thanh nhảy
-        yield return new WaitForSeconds(duration);  // Chờ trong khoảng thời gian duration (0.2 giây)
-        animator.ResetTrigger("isJump");  // Reset trigger để ngăn animation lặp lại
+        animator.SetTrigger("isJump");
+        audioSource.PlayOneShot(jumpSound);
+
+        yield return new WaitForSeconds(duration);
+
+        animator.ResetTrigger("isJump");
         isJumping = false;
-        
-        // Phát âm thanh chạm đất sau khi hết hoạt ảnh nhảy
-        audioSource.PlayOneShot(landSound);
     }
 
-    private void UpdateSoundEffects(bool forwardPressed, bool backwardPressed, bool leftPressed, bool rightPressed, bool runPressed)
+    private void HandleLand()
     {
-        if (isJumping)
-        {
-            return;  // Nếu đang nhảy thì không xử lý âm thanh đi bộ hoặc chạy
-        }
+        //audioSource.PlayOneShot(landSound); // Uncomment to enable landing sound
+    }
 
-        // Xử lý âm thanh chạy
-        if ((forwardPressed || backwardPressed || leftPressed || rightPressed) && runPressed)
+    private void UpdateSoundEffects(bool isMoving, bool isSprinting)
+    {
+        if (isJumping) return;
+
+        if (isMoving && isSprinting)
         {
             if (!audioSource.isPlaying || audioSource.clip != runSound)
             {
@@ -111,7 +109,7 @@ public class TwoDimensionStateController : MonoBehaviour
                 audioSource.Play();
             }
         }
-        else if (forwardPressed || backwardPressed || leftPressed || rightPressed)
+        else if (isMoving)
         {
             if (!audioSource.isPlaying || audioSource.clip != walkSound)
             {
@@ -123,7 +121,7 @@ public class TwoDimensionStateController : MonoBehaviour
         {
             if (audioSource.isPlaying && (audioSource.clip == walkSound || audioSource.clip == runSound))
             {
-                audioSource.Stop();  // Dừng âm thanh khi không di chuyển
+                audioSource.Stop();
             }
         }
     }
